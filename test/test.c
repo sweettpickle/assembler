@@ -2,7 +2,11 @@
 
 int main()
 {
-	printf("Hello, world!");
-	printf("\n");
+	char a;
+	
+	while (1)
+	{
+		scanf("%s", &a);
+	}
 	return (0);
 }

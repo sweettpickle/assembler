@@ -1,8 +1,5 @@
 ;CSEG segment
 ;org 100h ;размещение команд в памяти начинается с 100аш, пропустив 100 байтов
-format ELF
-section '.text' executable
-public _start
 _start:
 ;	mov si, 0x100
 	mov eax, 9
