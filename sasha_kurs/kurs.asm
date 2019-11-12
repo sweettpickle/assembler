@@ -1,43 +1,52 @@
-	.286 
+	.286 ; for pusha and popa
 	.model tiny
 	.code
 	org 100h
 
 Start:
-	mov cx, 3
+	mov cx, 4
 
 input:
 	mov ah, 0
 	int 16h
 	cmp al, 13
-	je @enter
+	je is_enter
 	mov dl, al
 	mov ah, 2
 	int 21h
-	
-@check:
-	cmp dl, 1Bh
-	je @out	
-	cmp dl, 80h
-	jb @not_eng 
-	cmp dl, 0AFh
-	jbe @is_eng
-	cmp dl, 0E0h
-	jb @not_eng
-	cmp dl, 0F1h
-	jbe @is_eng
+	dec cx
 
-@not_eng:
+check:
+	cmp al, 1Bh
+	je @out	;если это esc, то выход из проги
+	
+	cmp al, 0E8h
+	je is_not_beg
+	jne not_sh
+
+is_not_beg:
+	cmp cx, 0
+	jl is_sh
 	jmp input
 
-@is_eng:
-	dec cx
-	cmp cx, 0
-	je @is_three
+print:
+	mov ah, 09h
+	mov dx, offset mes
+	int 21h
+	
+not_sh:
+	push ax
+	jmp input
+
+is_sh:
+	pop ax
+	pop ax
+	pop ax
+	cmp al, 0A7h
+	je @call
 	jne input
 
-@is_three:
-	mov cx, 3
+@call:
 	call beep
 	jmp input
 
@@ -67,13 +76,13 @@ beep proc
 	ret
 beep endp
 
-@enter:
+is_enter:
 	mov dl, 0Dh
 	mov ah, 2
 	int 21h
 	mov dl, 0Ah
 	int 21h
-	jmp @check
+	jmp check
 
 @out:
 	mov ah, 2
@@ -81,4 +90,7 @@ beep endp
 	int 21h
 	int 20h
 
+mes db "ha$"
+
+;Code ends
 end Start

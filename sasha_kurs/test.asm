@@ -9,47 +9,63 @@ Start:
 input:
 	mov ah, 0
 	int 16h
+
 	cmp al, 13
 	je is_enter
+
 	mov dl, al
 	mov ah, 2
 	int 21h
+
 	dec cx
 
 check:
 	cmp al, 1Bh
 	je @out	;если это esc, то выход из проги
+
+	cmp cx, 0
+	jge not_sh
 	
 	cmp al, 0E8h
-	je is_not_beg
 	jne not_sh
-
-is_not_beg:
-	cmp cx, 0
-	jl is_sh
-	jmp input
-
-print:
-	mov ah, 09h
-	mov dx, offset mes
-	int 21h
+	je is_sh
 	
 not_sh:
 	push ax
 	jmp input
 
-is_sh:
-	pop ax
-	pop ax
-	pop ax
-	cmp al, 0A7h
-	je @call
-	jne input
-
-@call:
-	call beep
+@push:
+	push mas[si]
+	dec si
+	push mas[si]
+	dec si
+	push mas[si]
+	dec si
+	push mas[si]
+	mov al, 0E8h
+	push ax
 	jmp input
 
+is_sh:
+	mov si, 0
+
+	pop ax
+	mov mas[si], ax
+	inc si
+	pop ax
+	mov mas[si], ax
+	inc si
+	pop ax
+	mov mas[si], ax
+	inc si
+	pop ax
+	mov mas[si], ax
+	
+	cmp al, 0A7h
+	jne @push
+	call beep
+	jmp @push
+	
 beep proc 
 	pusha
 
@@ -76,6 +92,12 @@ beep proc
 	ret
 beep endp
 
+@out:
+	mov ah, 2
+	mov dl, 0Dh
+	int 21h
+	int 20h
+
 is_enter:
 	mov dl, 0Dh
 	mov ah, 2
@@ -84,13 +106,15 @@ is_enter:
 	int 21h
 	jmp check
 
-@out:
-	mov ah, 2
-	mov dl, 0Dh
-	int 21h
-	int 20h
+;print proc
+;	mov ah, 09h
+;	mov dx, offset mes
+;	int 21h
+;	ret
+;print endp
 
-mes db "ha$"
+;mes db "ha$"
+mas dw 4 dup (0)
 
 ;Code ends
 end Start
