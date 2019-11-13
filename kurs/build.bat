@@ -1,2 +1,2 @@
-..\tasm test.asm
-..\tlink /x /t test.obj
+..\tasm kurs.asm
+..\tlink /x /t kurs.obj

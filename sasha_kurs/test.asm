@@ -66,31 +66,26 @@ is_sh:
 	call beep
 	jmp @push
 	
-beep proc 
-	pusha
+beep proc ;начало процесса
+	pusha ;сохраняем содержимое регистров 
 
-	mov al, 0b6h
-	out 43h, al 
+	in al, 61h ;получить состояние порта в al
+	or al, 00000011b ;установить биты 0 и 1 в 1
+	out 61h, al ;включить динамик
+
+	mov al, 2h ;высота звука
+	out 42h, al ;включаем таймер
 	
-	mov al, 0
-	out 42h, al
-	mov al, 3h
-	out 42h, al
+	mov cx, 1 ;продолжительность звука
+	mov ah, 86h ;функция 86h
+	int 15h ;пауза
 	
-	in al, 61h
-	or al, 00000011b
-	out 61h, al
-	
-	mov cx, 1
-	mov ah, 86h
-	int 15h
-	
-	in al, 16h
-	and al, 11111100b
-	out 61h, al
-	popa
-	ret
-beep endp
+	in al, 61h ;получаем состояние динамика
+	and al, 11111100b ;обнуляем младшие биты
+	out 61h, al ;теперь динамик выключен 
+	popa ;восстанавливаем значения регистров
+	ret ; аналогично return 
+beep endp ;конец процесса
 
 @out:
 	mov ah, 2
@@ -106,14 +101,14 @@ is_enter:
 	int 21h
 	jmp check
 
-;print proc
-;	mov ah, 09h
-;	mov dx, offset mes
-;	int 21h
-;	ret
-;print endp
+print proc
+	mov ah, 09h
+	mov dx, offset mes
+	int 21h
+	ret
+print endp
 
-;mes db "ha$"
+mes db "ha$"
 mas dw 4 dup (0)
 
 ;Code ends
