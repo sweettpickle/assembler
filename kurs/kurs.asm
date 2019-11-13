@@ -44,12 +44,12 @@ input:
 beep proc 
 	pusha
 
-	mov al, 0b6h
+	mov al, 10110110b
 	out 43h, al 
 	
 	mov al, 0
 	out 42h, al
-	mov al, 3h
+	mov al, 1h
 	out 42h, al
 	
 	in al, 61h
@@ -60,7 +60,7 @@ beep proc
 	mov ah, 86h
 	int 15h
 	
-	in al, 16h
+	in al, 61h
 	and al, 11111100b
 	out 61h, al
 	popa
