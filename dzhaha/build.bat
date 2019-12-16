@@ -1,2 +1,2 @@
-..\tasm kurs.asm
-..\tlink /x /t kurs.obj
+..\tasm kurs_com.asm
+..\tlink /x /t kurs_com.obj
