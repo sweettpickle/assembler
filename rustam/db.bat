@@ -1,0 +1,1 @@
+..\AFDPRO kurs.COM
