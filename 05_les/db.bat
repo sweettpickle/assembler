@@ -1,1 +1,0 @@
-..\AFDPRO output.COM

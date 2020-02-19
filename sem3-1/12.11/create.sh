@@ -1,10 +1,11 @@
 touch $1.asm
 {
-echo 'CSEG segment'
+echo 'Assume CS:Code;, DS:Code'
+echo 'Code Segment'
 echo 'org 100h'
 echo 'Start:'
 echo '\n\n'
-echo 'CSEG ends'
+echo 'Code ends'
 echo 'end Start'
 } > $1.asm
 

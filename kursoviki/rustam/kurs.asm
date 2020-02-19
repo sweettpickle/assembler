@@ -1,4 +1,3 @@
-;	.286
 	.model tiny ;определяем модель памяти, программа формата .com
 	.code ;задаем начало сегмента кода
 	org 100h ;смещаем адрес кода на 100h байт
@@ -25,8 +24,6 @@ is_f12:
 	jmp Start
 
 beep proc 
-;	pusha 
-
 	in al, 61h 
 	or al, 00000011b
 	out 61h, al 
@@ -41,7 +38,7 @@ beep proc
 	in al, 61h 
 	and al, 11111100b 
 	out 61h, al 
-;	popa 
+ 
 	ret 
 beep endp 
 
